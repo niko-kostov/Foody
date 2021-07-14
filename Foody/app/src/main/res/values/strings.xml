@@ -4,4 +4,7 @@
     <string name="recipes_fragment">Recipes</string>
     <string name="favorites">Favorites</string>
     <string name="jokes">Jokes</string>
+    <string name="lunching_floating_button">Lunching floating button</string>
+    <string name="no_internet_emoji">No internet emoji</string>
+    <string name="no_internet_connection">No Internet Connection.</string>
 </resources>
