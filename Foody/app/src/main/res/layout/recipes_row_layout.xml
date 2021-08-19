@@ -12,16 +12,17 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/recipesRow"
+        onRecipeClickListener="@{result}"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/row_card"
             android:layout_width="0dp"
             android:layout_height="250dp"
             app:cardCornerRadius="10dp"
+            android:layout_marginHorizontal="6dp"
+            android:layout_marginVertical="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -45,7 +46,7 @@
 
                 <TextView
                     android:id="@+id/recipeTitle"
-                    android:layout_width="180dp"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="12dp"
@@ -56,32 +57,32 @@
                     android:textColor="@color/darker"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    tools:text="Pizza Margarita"
                     app:layout_constraintStart_toEndOf="@+id/recipeImage"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Pizza Margarita" />
 
                 <TextView
                     android:id="@+id/recipeDescription"
-                    android:layout_width="180dp"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="10dp"
                     android:ellipsize="end"
-                    tools:text="This is a very long description to see how the style would look like"
                     android:maxLines="6"
                     android:text="@{result.summary}"
                     android:textColor="@color/darkGray"
                     android:textSize="16sp"
                     app:layout_constraintStart_toEndOf="@+id/recipeImage"
-                    app:layout_constraintTop_toBottomOf="@id/recipeTitle" />
+                    app:layout_constraintTop_toBottomOf="@id/recipeTitle"
+                    tools:text="This is a very long description to see how the style would look like" />
 
                 <ImageView
                     android:id="@+id/recipeHeartIcon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:layout_marginBottom="26dp"
                     android:src="@drawable/ic_heart"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginBottom="26dp"
                     app:layout_constraintLeft_toLeftOf="@id/recipeTextCountHeart"
                     app:layout_constraintRight_toRightOf="@id/recipeTextCountHeart"
                     app:tint="@color/red" />
@@ -94,17 +95,17 @@
                     android:layout_marginStart="16dp"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    tools:text="100"
                     app:layout_constraintLeft_toRightOf="@id/recipeImage"
-                    app:layout_constraintTop_toBottomOf="@+id/recipeHeartIcon" />
+                    app:layout_constraintTop_toBottomOf="@+id/recipeHeartIcon"
+                    tools:text="100" />
 
                 <ImageView
                     android:id="@+id/recipeTimeIcon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:layout_marginBottom="26dp"
                     android:src="@drawable/ic_clock"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginBottom="26dp"
                     app:layout_constraintLeft_toLeftOf="@id/recipeTextTime"
                     app:layout_constraintRight_toRightOf="@id/recipeTextTime"
                     app:tint="@color/yellow" />
@@ -117,17 +118,17 @@
                     android:layout_marginStart="30dp"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    tools:text="45'"
                     app:layout_constraintLeft_toRightOf="@id/recipeHeartIcon"
-                    app:layout_constraintTop_toBottomOf="@+id/recipeTimeIcon" />
+                    app:layout_constraintTop_toBottomOf="@+id/recipeTimeIcon"
+                    tools:text="45'" />
 
                 <ImageView
                     android:id="@+id/recipeVeganIcon"
                     applyVeganColor="@{result.vegan}"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/ic_vegan"
                     android:layout_marginBottom="26dp"
+                    android:src="@drawable/ic_vegan"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="@id/recipeTextVegan"
                     app:layout_constraintRight_toRightOf="@id/recipeTextVegan"
@@ -139,9 +140,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="28dp"
+                    android:text="@string/vegan"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:text="@string/vegan"
                     app:layout_constraintLeft_toRightOf="@id/recipeTimeIcon"
                     app:layout_constraintTop_toBottomOf="@+id/recipeHeartIcon" />
 
