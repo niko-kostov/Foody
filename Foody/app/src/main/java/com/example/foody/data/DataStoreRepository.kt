@@ -49,7 +49,7 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         }
     }
 
-    suspend fun saveBackOnline(backOnline: Boolean){
+    suspend fun saveBackOnline(backOnline: Boolean) {
         dataStore.edit { preferences ->
             preferences[PreferenceKeys.backOnline] = backOnline
         }
