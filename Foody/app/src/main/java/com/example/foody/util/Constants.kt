@@ -33,5 +33,12 @@ class Constants {
         const val PREFERENCES_DIET_TYPE = "dietType"
         const val PREFERENCES_DIET_TYPE_ID = "dietTypeId"
         const val PREFERENCES_BACK_ONLINE = "backOnline"
+
+        //boni preferences
+        const val PREFERENCES_LOGGED_IN_USER = "isUserLoggedIn"
+        const val PREFERENCES_TOKEN = "token"
+        const val PREFERENCES_FULL_NAME = "fullName"
+        const val PREFERENCES_EMAIL = "email"
+        const val PREFERENCES_PHONE_NUMBER = "phoneNumber"
     }
 }

@@ -9,9 +9,14 @@ import com.example.foody.util.Constants.Companion.DEFAULT_MEAL_TYPE
 import com.example.foody.util.Constants.Companion.PREFERENCES_BACK_ONLINE
 import com.example.foody.util.Constants.Companion.PREFERENCES_DIET_TYPE
 import com.example.foody.util.Constants.Companion.PREFERENCES_DIET_TYPE_ID
+import com.example.foody.util.Constants.Companion.PREFERENCES_EMAIL
+import com.example.foody.util.Constants.Companion.PREFERENCES_FULL_NAME
+import com.example.foody.util.Constants.Companion.PREFERENCES_LOGGED_IN_USER
 import com.example.foody.util.Constants.Companion.PREFERENCES_MEAL_TYPE
 import com.example.foody.util.Constants.Companion.PREFERENCES_MEAL_TYPE_ID
 import com.example.foody.util.Constants.Companion.PREFERENCES_NAME
+import com.example.foody.util.Constants.Companion.PREFERENCES_PHONE_NUMBER
+import com.example.foody.util.Constants.Companion.PREFERENCES_TOKEN
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.flow.Flow
@@ -31,6 +36,11 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         val selectedDietType = stringPreferencesKey(PREFERENCES_DIET_TYPE)
         val selectedDietTypeId = intPreferencesKey(PREFERENCES_DIET_TYPE_ID)
         val backOnline = booleanPreferencesKey(PREFERENCES_BACK_ONLINE)
+        val isUserLoggedIn = booleanPreferencesKey(PREFERENCES_LOGGED_IN_USER)
+        val token = stringPreferencesKey(PREFERENCES_TOKEN)
+        val fullName = stringPreferencesKey(PREFERENCES_FULL_NAME)
+        val email = stringPreferencesKey(PREFERENCES_EMAIL)
+        val phoneNumber = stringPreferencesKey(PREFERENCES_PHONE_NUMBER)
     }
 
     private val dataStore: DataStore<Preferences> = context.dataStore
@@ -52,6 +62,22 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
     suspend fun saveBackOnline(backOnline: Boolean){
         dataStore.edit { preferences ->
             preferences[PreferenceKeys.backOnline] = backOnline
+        }
+    }
+
+    suspend fun saveLoginCredentials(
+        token: String,
+        fullName: String,
+        email: String,
+        phoneNumber: String,
+        isUserLoggedIn: Boolean
+    ) {
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.token] = token
+            preferences[PreferenceKeys.fullName] = fullName
+            preferences[PreferenceKeys.email] = email
+            preferences[PreferenceKeys.phoneNumber] = phoneNumber
+            preferences[PreferenceKeys.isUserLoggedIn] = isUserLoggedIn
         }
     }
 
@@ -88,6 +114,36 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
                 selectedDietTypeId
             )
         }
+
+    val readIsUserLoggedIn: Flow<Boolean> = dataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }
+        .map { preferences ->
+            val isUserLoggedIn = preferences[PreferenceKeys.isUserLoggedIn] ?: false
+            isUserLoggedIn
+        }
+
+    val readLoggedInUser: Flow<LoggedInUser> = dataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }
+        .map { preferences ->
+            val token = preferences[PreferenceKeys.token] ?: ""
+            val fullName = preferences[PreferenceKeys.fullName] ?: ""
+            val phoneNumber = preferences[PreferenceKeys.phoneNumber] ?: ""
+            val email = preferences[PreferenceKeys.email] ?: ""
+            val isUserLoggedIn = preferences[PreferenceKeys.isUserLoggedIn] ?: false
+            LoggedInUser(token, fullName, email, phoneNumber, isUserLoggedIn)
+        }
 }
 
 data class MealAndDietType(
@@ -95,4 +151,12 @@ data class MealAndDietType(
     val selectedMealTypeId: Int,
     val selectedDietType: String,
     val selectedDietTypeId: Int,
+)
+
+data class LoggedInUser(
+    val token: String,
+    val fullName: String,
+    val email: String,
+    val phoneNumber: String,
+    val isUserLoggedIn: Boolean
 )
