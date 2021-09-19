@@ -14,6 +14,7 @@ import com.example.foody.databinding.FragmentRecipesBinding
 import com.example.foody.viewmodels.AccountViewModel
 import com.example.foody.viewmodels.MainViewModel
 import com.example.foody.viewmodels.RecipesViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AccountFragment : Fragment() {
@@ -46,7 +47,7 @@ class AccountFragment : Fragment() {
         }
 
         accountViewModel.isUserLoggedIn.observe(viewLifecycleOwner, {
-            if(it) {
+            if (it) {
                 findNavController().navigate(R.id.action_accountFragment_to_recipesFragment)
             }
         })
@@ -55,9 +56,7 @@ class AccountFragment : Fragment() {
     }
 
     private fun loginUser(email: String, password: String) {
-        lifecycleScope.launch {
-            accountViewModel.loginUser(email, password)
-        }
+        accountViewModel.login(email, password)
     }
 
 }

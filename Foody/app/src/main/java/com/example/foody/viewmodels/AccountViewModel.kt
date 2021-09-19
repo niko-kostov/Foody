@@ -7,7 +7,10 @@ import com.example.foody.data.Repository
 import com.example.foody.models.AccountLoginRequest
 import com.example.foody.models.AccountLoginResponse
 import com.example.foody.util.NetworkResult
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.lang.Exception
 import javax.inject.Inject
@@ -21,13 +24,22 @@ class AccountViewModel @Inject constructor(
 
     var isUserLoggedIn = dataStoreRepository.readIsUserLoggedIn.asLiveData()
 
-    var loggedInUserResponse: MutableLiveData<NetworkResult<AccountLoginResponse>> = MutableLiveData()
+    var loggedInUser = dataStoreRepository.readLoggedInUser.asLiveData()
 
-    suspend fun loginUser(email: String, password: String) {
+    var loggedInUserResponse: MutableLiveData<NetworkResult<AccountLoginResponse>> =
+        MutableLiveData()
+
+    fun login(email: String, password: String) {
+        viewModelScope.launch { loginUser(AccountLoginRequest(email = email, password = password)) }
+    }
+
+    private suspend fun loginUser(accountLoginRequest: AccountLoginRequest) {
         loggedInUserResponse.value = NetworkResult.Loading()
         try {
-            val response = repository.remote.loginUser(AccountLoginRequest(email = email, password = password))
-
+            val response =
+                repository.remote.loginUser(
+                    accountLoginRequest
+                )
             loggedInUserResponse.value = handleLoggedInUserResponse(response)
         } catch (e: Exception) {
             loggedInUserResponse.value = NetworkResult.Error("Login invalid.")
@@ -42,7 +54,13 @@ class AccountViewModel @Inject constructor(
             response.isSuccessful -> {
                 val loginUser = response.body()!!
                 val token = loginUser.tokenType + loginUser.accessToken
-                dataStoreRepository.saveLoginCredentials(token, loginUser.fullName, loginUser.email, loginUser.phoneNumber, true)
+                dataStoreRepository.saveLoginCredentials(
+                    token,
+                    loginUser.fullName,
+                    loginUser.email,
+                    loginUser.phoneNumber,
+                    true
+                )
                 NetworkResult.Success(loginUser)
             }
             else -> {
@@ -50,6 +68,4 @@ class AccountViewModel @Inject constructor(
             }
         }
     }
-
-
 }
