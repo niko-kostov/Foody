@@ -29,10 +29,10 @@
         tools:layout="@layout/fragment_favorite_recipes" />
 
     <fragment
-        android:id="@+id/foodJokeFragment"
-        android:name="com.example.foody.ui.fragments.foodjoke.FoodJokeFragment"
-        android:label="Jokes"
-        tools:layout="@layout/fragment_food_joke" />
+        android:id="@+id/accountFragment"
+        android:name="com.example.foody.ui.fragments.account.AccountFragment"
+        android:label="Account"
+        tools:layout="@layout/fragment_account" />
     <dialog
         android:id="@+id/recipesBottomSheet"
         android:name="com.example.foody.ui.fragments.recipes.bottomsheet.RecipesBottomSheet"

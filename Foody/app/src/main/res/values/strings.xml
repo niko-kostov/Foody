@@ -42,4 +42,6 @@
     <string name="healthy">Healthy</string>
     <string name="dairy_free">Dairy Free</string>
     <string name="image_for_ingridient">Image for ingridient</string>
+    <string name="logout">Logout</string>
+    <string name="account">Account</string>
 </resources>
