@@ -1,10 +1,11 @@
-package com.example.foody.adapters
+package com.example.foody.bindingadapters
 
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.foody.adapters.FavoriteRecipesAdapter
 import com.example.foody.data.database.entites.FavoritesEntity
 
 class FavoriteRecipesBinding {

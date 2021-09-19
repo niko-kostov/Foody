@@ -1,10 +1,8 @@
 package com.example.foody.ui.fragments.favorites
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,14 +10,20 @@ import com.example.foody.R
 import com.example.foody.adapters.FavoriteRecipesAdapter
 import com.example.foody.databinding.FragmentFavoriteRecipesBinding
 import com.example.foody.viewmodels.MainViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_favorite_recipes.view.*
 
 @AndroidEntryPoint
 class FavoriteRecipesFragment : Fragment() {
 
-    private val mAdapter: FavoriteRecipesAdapter by lazy { FavoriteRecipesAdapter() }
     private val mainViewModel: MainViewModel by viewModels()
+    private val mAdapter: FavoriteRecipesAdapter by lazy {
+        FavoriteRecipesAdapter(
+            requireActivity(),
+            mainViewModel
+        )
+    }
 
     private var _binding: FragmentFavoriteRecipesBinding? = null
     private val binding get() = _binding!!
@@ -34,6 +38,8 @@ class FavoriteRecipesFragment : Fragment() {
         binding.mainViewModel = mainViewModel
         binding.mAdapter = mAdapter
 
+        setHasOptionsMenu(true)
+
         setupRecyclerView(binding.favoritesRecyclerView)
 
         return binding.root
@@ -42,6 +48,26 @@ class FavoriteRecipesFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+        mAdapter.clearContextualActionMode()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.favorite_recipes_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.delete_all_favorite_recipes_menu) {
+            mainViewModel.deleteAllFavoriteRecipe()
+            showSnackBar("All favorite recipes removed.")
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun showSnackBar(message: String) {
+        Snackbar
+            .make(binding.root, message, Snackbar.LENGTH_SHORT)
+            .setAction("Okay") {}
+            .show()
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
