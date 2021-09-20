@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.foody.data.DataStoreRepository.PreferenceKeys.profileImage
 import com.example.foody.util.Constants.Companion.DEFAULT_DIET_TYPE
 import com.example.foody.util.Constants.Companion.DEFAULT_MEAL_TYPE
 import com.example.foody.util.Constants.Companion.PREFERENCES_BACK_ONLINE
@@ -16,6 +17,7 @@ import com.example.foody.util.Constants.Companion.PREFERENCES_MEAL_TYPE
 import com.example.foody.util.Constants.Companion.PREFERENCES_MEAL_TYPE_ID
 import com.example.foody.util.Constants.Companion.PREFERENCES_NAME
 import com.example.foody.util.Constants.Companion.PREFERENCES_PHONE_NUMBER
+import com.example.foody.util.Constants.Companion.PREFERENCES_PROFILE_IMAGE
 import com.example.foody.util.Constants.Companion.PREFERENCES_TOKEN
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ActivityRetainedScoped
@@ -41,6 +43,7 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         val fullName = stringPreferencesKey(PREFERENCES_FULL_NAME)
         val email = stringPreferencesKey(PREFERENCES_EMAIL)
         val phoneNumber = stringPreferencesKey(PREFERENCES_PHONE_NUMBER)
+        val profileImage = stringPreferencesKey(PREFERENCES_PROFILE_IMAGE)
     }
 
     private val dataStore: DataStore<Preferences> = context.dataStore
@@ -59,7 +62,7 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         }
     }
 
-    suspend fun saveBackOnline(backOnline: Boolean){
+    suspend fun saveBackOnline(backOnline: Boolean) {
         dataStore.edit { preferences ->
             preferences[PreferenceKeys.backOnline] = backOnline
         }
@@ -70,7 +73,8 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
         fullName: String,
         email: String,
         phoneNumber: String,
-        isUserLoggedIn: Boolean
+        isUserLoggedIn: Boolean,
+        profileImage: String
     ) {
         dataStore.edit { preferences ->
             preferences[PreferenceKeys.token] = token
@@ -78,6 +82,7 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
             preferences[PreferenceKeys.email] = email
             preferences[PreferenceKeys.phoneNumber] = phoneNumber
             preferences[PreferenceKeys.isUserLoggedIn] = isUserLoggedIn
+            preferences[PreferenceKeys.profileImage] = profileImage
         }
     }
 
@@ -142,7 +147,8 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val co
             val phoneNumber = preferences[PreferenceKeys.phoneNumber] ?: ""
             val email = preferences[PreferenceKeys.email] ?: ""
             val isUserLoggedIn = preferences[PreferenceKeys.isUserLoggedIn] ?: false
-            LoggedInUser(token, fullName, email, phoneNumber, isUserLoggedIn)
+            val profileImage = preferences[PreferenceKeys.profileImage] ?: ""
+            LoggedInUser(token, fullName, email, phoneNumber, isUserLoggedIn, profileImage)
         }
 }
 
@@ -158,5 +164,6 @@ data class LoggedInUser(
     val fullName: String,
     val email: String,
     val phoneNumber: String,
-    val isUserLoggedIn: Boolean
+    val isUserLoggedIn: Boolean,
+    val profileImage: String
 )

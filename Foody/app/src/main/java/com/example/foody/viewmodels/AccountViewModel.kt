@@ -33,6 +33,23 @@ class AccountViewModel @Inject constructor(
         viewModelScope.launch { loginUser(AccountLoginRequest(email = email, password = password)) }
     }
 
+    fun logout() {
+        viewModelScope.launch {
+            logoutUser()
+        }
+    }
+
+    private suspend fun logoutUser() {
+        dataStoreRepository.saveLoginCredentials(
+            "",
+            "",
+            "",
+            "",
+            false,
+            ""
+        )
+    }
+
     private suspend fun loginUser(accountLoginRequest: AccountLoginRequest) {
         loggedInUserResponse.value = NetworkResult.Loading()
         try {
@@ -59,7 +76,8 @@ class AccountViewModel @Inject constructor(
                     loginUser.fullName,
                     loginUser.email,
                     loginUser.phoneNumber,
-                    true
+                    true,
+                    loginUser.profileImage
                 )
                 NetworkResult.Success(loginUser)
             }
