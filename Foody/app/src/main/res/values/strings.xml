@@ -47,4 +47,8 @@
     <string name="login">Login</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
+    <string name="save_to_favorites">Save to favorites</string>
+    <string name="currently_you_don_t_have_any_favorites">Currently you don\'t have any favorites</string>
+    <string name="delete_favorite_menu">Delete favorite menu</string>
+    <string name="delete_all">Delete All</string>
 </resources>
